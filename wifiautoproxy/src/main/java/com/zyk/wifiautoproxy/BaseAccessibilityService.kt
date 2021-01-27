@@ -14,7 +14,7 @@ import android.view.accessibility.AccessibilityManager
 import android.view.accessibility.AccessibilityNodeInfo
 
 /**
- * Created by zhangyakun on 2020/12/30.
+ * Created by windherd on 2020/12/30.
  */
 abstract class BaseAccessibilityService : AccessibilityService() {
     companion object {
@@ -45,6 +45,14 @@ abstract class BaseAccessibilityService : AccessibilityService() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             })
         }
+
+        fun sleep(timeMillis: Long = 300) {
+            try {
+                Thread.sleep(timeMillis)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     /**
@@ -52,7 +60,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun performBackClick() {
         try {
-            Thread.sleep(500)
+            sleep(500)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -64,7 +72,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun performHomeClick() {
         try {
-            Thread.sleep(500)
+            sleep(500)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -74,25 +82,25 @@ abstract class BaseAccessibilityService : AccessibilityService() {
     /**
      * 模拟下滑操作
      */
-    fun performScrollBackward() {
+    fun performScrollBackward(id: String?) {
         try {
-            Thread.sleep(500)
+            sleep()
+            findViewByID(id)?.performAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-        performGlobalAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD)
     }
 
     /**
      * 模拟上滑操作
      */
-    fun performScrollForward() {
+    fun performScrollForward(id: String?) {
         try {
-            Thread.sleep(500)
+            sleep()
+            findViewByID(id)?.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-        performGlobalAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
     }
 
     /**

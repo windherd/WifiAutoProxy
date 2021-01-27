@@ -2,6 +2,7 @@
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:accessibilityEventTypes="typeAllMask"
     android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagIncludeNotImportantViews"
     android:canRetrieveWindowContent="true"
     android:description="@string/bili_wifi_proxy"
-    android:notificationTimeout="1000" />
+    android:notificationTimeout="100" />

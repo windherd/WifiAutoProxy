@@ -14,7 +14,9 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
+/**
+ * Created by windherd on 2020/12/30.
+ */
 class MainActivity : AppCompatActivity() {
     private val sp by lazy { getSharedPreferences("wifi_auto_proxy", Context.MODE_PRIVATE) }
     private lateinit var ipCharles: EditText
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun renderUI() {
+        supportActionBar?.title = "手机 IP 地址: ${IpGetUtils.getLocalIpAddress(this)}"
         ipCharles.setText(sp.getString(IP_CHARLES, ""))
         portCharles.check(sp.getInt(PORT_CHARLES, R.id.c_first))
         ipHassan.setText(sp.getString(IP_HASSAN, ""))
@@ -62,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             save2Sp()
             WifiConfig.open = true
+            WifiConfig.proxyType = WifiConfig.ProxyType.CHARLES
             WifiConfig.host = ipCharles.editableText.toString()
             WifiConfig.port =
                 findViewById<RadioButton>(portCharles.checkedRadioButtonId).text.toString()
@@ -86,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             save2Sp()
             WifiConfig.open = true
+            WifiConfig.proxyType = WifiConfig.ProxyType.HASSAN
             WifiConfig.host = ipHassan.editableText.toString()
             WifiConfig.port =
                 findViewById<RadioButton>(portHassan.checkedRadioButtonId).text.toString()

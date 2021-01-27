@@ -1,13 +1,13 @@
 package com.zyk.wifiautoproxy
 
 import android.os.Build
-import android.view.Gravity
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 
 /**
- * Created by zhangyakun on 2020/12/30.
+ * ~/Library/Android/sdk/tools/bin/uiautomatorviewer
+ * Created by windherd on 2020/12/30.
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class WifiProxyAccessibilityService : BaseAccessibilityService() {
@@ -18,44 +18,38 @@ class WifiProxyAccessibilityService : BaseAccessibilityService() {
             if (className == "com.android.settings.Settings\$WifiSettingsActivity") {
                 // wlan页面
                 clickViewByID("com.android.settings:id/wifi_details")
-                // 详情页面
+                // wifi详情页面
                 sleep()
-                clickViewByText("高级设置")
-                // 高级设置页面
-                sleep()
-                val spinner = findViewByText("代理服务器")?.parent?.getChild(1)
+                clickViewByText("查看更多")
+                val spinner = findViewByText("代理服务器")?.parent?.getChild(0)
                 performViewClick(spinner)
                 sleep()
                 if (WifiConfig.open) {
                     val manual = findViewByText("手动", true)
                     performViewClick(manual)
+                    //滚动
+                    performScrollForward("com.android.settings:id/recycler_view")
                     sleep()
                     val hostInfo = findViewByText("代理主机名")?.parent?.getChild(1)
                     inputText(hostInfo, WifiConfig.host)
                     val portInfo = findViewByText("代理服务器端口")?.parent?.getChild(1)
                     inputText(portInfo, WifiConfig.port)
+                    sleep(500)
                     clickViewByID("com.android.settings:id/save_button")
-                    Toast.makeText(
-                        this, "已经打开代理!\n ${WifiConfig.host}:${WifiConfig.port}", Toast
-                            .LENGTH_LONG
-                    ).apply { setGravity(Gravity.CENTER, 0, 0) }.show()
+                    showActionNotice("已经打开${WifiConfig.proxyType}代理!\n ${WifiConfig.host}:${WifiConfig.port}")
                 } else {
                     val none = findViewByText("无", true)
+                    sleep(500)
                     performViewClick(none)
                     clickViewByID("com.android.settings:id/save_button")
-                    Toast.makeText(this, "已经关闭代理", Toast.LENGTH_LONG)
-                        .apply { setGravity(Gravity.CENTER, 0, 0) }.show()
+                    showActionNotice("已经关闭代理")
                 }
                 performGlobalAction(GLOBAL_ACTION_HOME)
             }
         }
     }
 
-    private fun sleep() {
-        try {
-            Thread.sleep(300)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+    private fun showActionNotice(str: String) {
+        Toast.makeText(this,str,Toast.LENGTH_LONG).show()
     }
 }
