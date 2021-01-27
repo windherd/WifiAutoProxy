@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 
 /**
+ * ~/Library/Android/sdk/tools/bin/uiautomatorviewer
  * Created by zhangyakun on 2020/12/30.
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -51,11 +52,5 @@ class WifiProxyAccessibilityService : BaseAccessibilityService() {
         }
     }
 
-    private fun sleep() {
-        try {
-            Thread.sleep(300)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-    }
+
 }

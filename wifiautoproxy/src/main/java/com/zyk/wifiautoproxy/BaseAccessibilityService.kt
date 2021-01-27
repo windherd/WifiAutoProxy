@@ -45,6 +45,14 @@ abstract class BaseAccessibilityService : AccessibilityService() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             })
         }
+
+        fun sleep(timeMillis: Long = 300) {
+            try {
+                Thread.sleep(timeMillis)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     /**
@@ -52,7 +60,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun performBackClick() {
         try {
-            Thread.sleep(500)
+            sleep(500)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -64,7 +72,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun performHomeClick() {
         try {
-            Thread.sleep(500)
+            sleep(500)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -76,7 +84,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun performScrollBackward() {
         try {
-            Thread.sleep(500)
+            sleep(500)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -88,7 +96,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun performScrollForward() {
         try {
-            Thread.sleep(500)
+            sleep(500)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
