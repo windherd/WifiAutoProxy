@@ -2,19 +2,15 @@ package com.zyk.wifiautoproxy
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
-import android.annotation.TargetApi
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.accessibility.AccessibilityManager
 import android.view.accessibility.AccessibilityNodeInfo
 
 /**
- * Created by zhangyakun on 2020/12/30.
+ * Created by windherd on 2020/12/30.
  */
 abstract class BaseAccessibilityService : AccessibilityService() {
     companion object {
@@ -26,7 +22,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
          */
         fun checkAccessibilityEnabled(context: Context, serviceName: String): Boolean {
             val accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as
-                AccessibilityManager
+                    AccessibilityManager
             val accessibilityServices =
                 accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC)
             for (info in accessibilityServices) {
@@ -45,6 +41,14 @@ abstract class BaseAccessibilityService : AccessibilityService() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             })
         }
+
+        fun sleep(timeMillis: Long = 300) {
+            try {
+                Thread.sleep(timeMillis)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     /**
@@ -52,7 +56,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun performBackClick() {
         try {
-            Thread.sleep(500)
+            sleep(500)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -64,7 +68,7 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun performHomeClick() {
         try {
-            Thread.sleep(500)
+            sleep(500)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -74,25 +78,25 @@ abstract class BaseAccessibilityService : AccessibilityService() {
     /**
      * 模拟下滑操作
      */
-    fun performScrollBackward() {
+    fun performScrollBackward(id: String?) {
         try {
-            Thread.sleep(500)
+            sleep()
+            findViewByID(id)?.performAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-        performGlobalAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD)
     }
 
     /**
      * 模拟上滑操作
      */
-    fun performScrollForward() {
+    fun performScrollForward(id: String?) {
         try {
-            Thread.sleep(500)
+            sleep()
+            findViewByID(id)?.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-        performGlobalAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
     }
 
     /**
@@ -125,8 +129,8 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      * @param id id
      * @return View
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     fun findViewByID(id: String?): AccessibilityNodeInfo? {
+        if (id == null) return null
         val accessibilityNodeInfo = rootInActiveWindow ?: return null
         val nodeInfoList =
             accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(id)
@@ -154,8 +158,8 @@ abstract class BaseAccessibilityService : AccessibilityService() {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     fun clickViewByID(id: String?) {
+        if (id == null) return
         val accessibilityNodeInfo = rootInActiveWindow ?: return
         val nodeInfoList =
             accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(id)
@@ -193,21 +197,12 @@ abstract class BaseAccessibilityService : AccessibilityService() {
      */
     fun inputText(nodeInfo: AccessibilityNodeInfo?, text: String?) {
         if (nodeInfo == null) return
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val arguments = Bundle()
-            arguments.putCharSequence(
-                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
-                text
-            )
-            nodeInfo.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            val clipboard =
-                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("label", text)
-            clipboard.setPrimaryClip(clip)
-            nodeInfo.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
-            nodeInfo.performAction(AccessibilityNodeInfo.ACTION_PASTE)
-        }
+        val arguments = Bundle()
+        arguments.putCharSequence(
+            AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
+            text
+        )
+        nodeInfo.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
     }
 
     override fun onInterrupt() {}

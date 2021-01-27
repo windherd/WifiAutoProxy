@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zyk.wifiautoproxy">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
@@ -9,7 +9,9 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.WiFiAutoProxy">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -17,6 +19,7 @@
         </activity>
         <service
             android:name=".WifiProxyAccessibilityService"
+            android:exported="false"
             android:label="@string/bili_wifi_proxy"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
