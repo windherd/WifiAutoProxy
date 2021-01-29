@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun renderUI() {
+        supportActionBar?.title = "当前 IP 地址: ${IpGetUtils.getLocalIpAddress(this)}"
         ipCharles.setText(sp.getString(IP_CHARLES, ""))
         portCharles.check(sp.getInt(PORT_CHARLES, R.id.c_first))
         ipHassan.setText(sp.getString(IP_HASSAN, ""))
