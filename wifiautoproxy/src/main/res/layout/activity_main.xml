@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/back_ground"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="@string/charles_proxy"
-            android:textColor="@color/black"
+            android:textColor="@color/title_color"
             android:textSize="24sp" />
 
         <EditText
@@ -71,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="@string/hassan_proxy"
-            android:textColor="@color/black"
+            android:textColor="@color/title_color"
             android:textSize="24sp" />
 
 
@@ -133,7 +134,7 @@
                 android:onClick="openCharles"
                 android:text="@string/open_charles_proxy"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 tools:ignore="OnClick" />
 
             <Space
@@ -147,7 +148,7 @@
                 android:onClick="openHassan"
                 android:text="@string/open_hassan_proxy"
                 android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 
@@ -159,7 +160,7 @@
             android:layout_marginRight="12dp"
             android:onClick="closeProxy"
             android:text="@string/close_proxy"
-            android:textColor="@color/white" />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </ScrollView>
