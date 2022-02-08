@@ -19,17 +19,17 @@ class WifiProxyAccessibilityService : BaseAccessibilityService() {
             if (className == "com.android.settings.Settings\$WifiSettingsActivity") {
                 // wlan页面
                 clickViewByID("com.android.settings:id/wifi_details")
-                // 详情页面
+                // wifi详情页面
                 sleep()
-                clickViewByText("高级设置")
-                // 高级设置页面
-                sleep()
+                clickViewByText("查看更多")
                 val spinner = findViewByText("代理服务器")?.parent?.getChild(1)
                 performViewClick(spinner)
                 sleep()
                 if (WifiConfig.open) {
                     val manual = findViewByText("手动", true)
                     performViewClick(manual)
+                    //滚动
+                    performScrollForward("com.android.settings:id/recycler_view")
                     sleep()
                     val hostInfo = findViewByText("代理主机名")?.parent?.getChild(1)
                     inputText(hostInfo, WifiConfig.host)

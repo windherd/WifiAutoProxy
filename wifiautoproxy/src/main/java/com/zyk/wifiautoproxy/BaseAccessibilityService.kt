@@ -82,25 +82,25 @@ abstract class BaseAccessibilityService : AccessibilityService() {
     /**
      * 模拟下滑操作
      */
-    fun performScrollBackward() {
+    fun performScrollBackward(id: String?) {
         try {
-            sleep(500)
+            sleep()
+            findViewByID(id)?.performAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-        performGlobalAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD)
     }
 
     /**
      * 模拟上滑操作
      */
-    fun performScrollForward() {
+    fun performScrollForward(id: String?) {
         try {
-            sleep(500)
+            sleep()
+            findViewByID(id)?.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-        performGlobalAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
     }
 
     /**
