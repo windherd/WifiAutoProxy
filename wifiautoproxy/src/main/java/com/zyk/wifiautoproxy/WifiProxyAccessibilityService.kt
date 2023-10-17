@@ -41,6 +41,7 @@ class WifiProxyAccessibilityService : BaseAccessibilityService() {
                     val none = findViewByText("无", true)
                     sleep(500)
                     performViewClick(none)
+                    sleep()
                     clickViewByID("com.android.settings:id/save_button")
                     showActionNotice("已经关闭代理")
                 }

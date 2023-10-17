@@ -20,6 +20,7 @@ object WifiConfig {
 const val CHARLES_PORT = "8888"
 const val PROXY_MAN_PORT = "9091"
 const val HASSAN_PORT = "80"
+const val BPROXY_PORT = "8080"
 
 open class Proxy(val host: String, val port: String) {
     override fun equals(other: Any?): Boolean {
@@ -34,4 +35,5 @@ open class Proxy(val host: String, val port: String) {
 class Charles(host: String) : Proxy(host, CHARLES_PORT)
 class ProxyMan(host: String) : Proxy(host, PROXY_MAN_PORT)
 class Hassan(host: String) : Proxy(host, HASSAN_PORT)
+class BProxy(host: String) : Proxy(host, BPROXY_PORT)
 

@@ -22,10 +22,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var ipProxyMan: EditText
     private lateinit var ipHassan: EditText
     private lateinit var ipHassan2: EditText
+    private lateinit var ipBproxy: EditText
     private lateinit var radioCharles: RadioButton
     private lateinit var radioProxyMan: RadioButton
     private lateinit var radioHassan: RadioButton
     private lateinit var radioHassan2: RadioButton
+    private lateinit var radioBproxy: RadioButton
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +44,12 @@ class MainActivity : AppCompatActivity() {
         ipProxyMan = findViewById(R.id.ip_proxy_man)
         ipHassan = findViewById(R.id.ip_hassan)
         ipHassan2 = findViewById(R.id.ip_hassan_2)
+        ipBproxy = findViewById(R.id.ip_bproxy)
         radioCharles = findViewById(R.id.radio_charles)
         radioProxyMan = findViewById(R.id.radio_proxy_man)
         radioHassan = findViewById(R.id.radio_hassan)
         radioHassan2 = findViewById(R.id.radio_hassan_2)
+        radioBproxy = findViewById(R.id.radio_bproxy)
         initRadio()
         updateUI()
     }
@@ -62,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 radioProxyMan.isChecked = false
                 radioHassan.isChecked = false
                 radioHassan2.isChecked = false
+                radioBproxy.isChecked = false
             }
 
         }
@@ -71,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 radioCharles.isChecked = false
                 radioHassan.isChecked = false
                 radioHassan2.isChecked = false
+                radioBproxy.isChecked = false
             }
         }
         radioHassan.setOnCheckedChangeListener { _, isChecked ->
@@ -79,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                 radioCharles.isChecked = false
                 radioProxyMan.isChecked = false
                 radioHassan2.isChecked = false
+                radioBproxy.isChecked = false
             }
         }
         radioHassan2.setOnCheckedChangeListener { _, isChecked ->
@@ -87,6 +94,16 @@ class MainActivity : AppCompatActivity() {
                 radioCharles.isChecked = false
                 radioProxyMan.isChecked = false
                 radioHassan.isChecked = false
+                radioBproxy.isChecked = false
+            }
+        }
+        radioBproxy.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                hideKeyboard(radioBproxy)
+                radioCharles.isChecked = false
+                radioProxyMan.isChecked = false
+                radioHassan.isChecked = false
+                radioHassan2.isChecked = false
             }
         }
     }
@@ -96,6 +113,7 @@ class MainActivity : AppCompatActivity() {
         val ipp = sp.getString(IP_PROXY_MAN, "")?.let { ProxyMan(it) }
         val iph = sp.getString(IP_HASSAN, "")?.let { Hassan(it) }
         val iph2 = sp.getString(IP_HASSAN2, "")?.let { Hassan(it) }
+        val ipb = sp.getString(IP_BPROXY, "")?.let { BProxy(it) }
         val currentProxy =
             Proxy(System.getProperty("http.proxyHost").orEmpty(), System.getProperty("http.proxyPort").orEmpty())
         val str = if (!currentProxy.host.isNullOrEmpty()) {
@@ -119,6 +137,10 @@ class MainActivity : AppCompatActivity() {
                     radioHassan2.isChecked = true
                     "当前代理为: Hassan2"
                 }
+                ipb -> {
+                    radioBproxy.isChecked = true
+                    "当前代理为: BProxy"
+                }
 
                 else -> {
                     "当前代理为: ${currentProxy.host}:${currentProxy.port}"
@@ -129,6 +151,7 @@ class MainActivity : AppCompatActivity() {
             radioProxyMan.isChecked = false
             radioHassan.isChecked = false
             radioHassan2.isChecked = false
+            radioBproxy.isChecked = false
             "当前没有设置代理"
         }
         supportActionBar?.title = str
@@ -136,6 +159,7 @@ class MainActivity : AppCompatActivity() {
         ipProxyMan.setText(ipp?.host.orEmpty())
         ipHassan.setText(iph?.host.orEmpty())
         ipHassan2.setText(iph2?.host.orEmpty())
+        ipBproxy.setText(ipb?.host.orEmpty())
     }
 
     fun openProxy(view: View) {
@@ -161,6 +185,11 @@ class MainActivity : AppCompatActivity() {
             radioHassan2.isChecked -> {
                 openInternal(Hassan(ipHassan2.editableText.toString())) {
                     Toast.makeText(this@MainActivity, "请输入Hassan2的代理ip", Toast.LENGTH_SHORT).show()
+                }
+            }
+            radioBproxy.isChecked -> {
+                openInternal(BProxy(ipBproxy.editableText.toString())) {
+                    Toast.makeText(this@MainActivity, "请输入Bproxy的代理ip", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -193,7 +222,8 @@ class MainActivity : AppCompatActivity() {
         sp.edit().putString(IP_CHARLES, ipCharles.editableText.toString())
             .putString(IP_PROXY_MAN, ipProxyMan.editableText.toString())
             .putString(IP_HASSAN, ipHassan.editableText.toString())
-            .putString(IP_HASSAN2, ipHassan2.editableText.toString()).apply()
+            .putString(IP_HASSAN2, ipHassan2.editableText.toString())
+            .putString(IP_BPROXY, ipBproxy.editableText.toString()).apply()
     }
 
     fun closeProxy(view: View) {
@@ -216,6 +246,7 @@ class MainActivity : AppCompatActivity() {
         const val IP_PROXY_MAN = "ip_proxy_man"
         const val IP_HASSAN = "ip_hassan"
         const val IP_HASSAN2 = "ip_hassan_2"
+        const val IP_BPROXY = "ip_bproxy"
     }
 
     override fun onDestroy() {
